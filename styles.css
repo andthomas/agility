@@ -1,0 +1,19 @@
+body {
+    padding: 0px;
+    margin: 0px';
+}
+
+.evilBall, .gameBall {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    position: fixed;
+}
+
+.evilBall {
+    background-color: red;
+}
+
+.gameBall {
+    background-color: blue;
+}
