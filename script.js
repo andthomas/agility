@@ -42,9 +42,10 @@ window.onload = () => {
                 }
 
                 // Check for collision
-                
-                if (evilBallPosX + 20 >= parseInt(ball1.el.style.left) && evilBallPosX + 20 <= parseInt(ball1.el.style.left) + 20 && evilBallPosY + 20 >= parseInt(ball1.el.style.top) && evilBallPosY + 20 <= parseInt(ball1.el.style.top) + 20
-                    || parseInt(ball1.el.style.left) + 20 >= evilBallPosX && parseInt(ball1.el.style.left) + 20 <= evilBallPosX + 20 && parseInt(ball1.el.style.top) + 20 >= evilBallPosY && parseInt(ball1.el.style.top) + 20 <= evilBallPosY + 20) {
+                let evilTop = evilBallPosY, evilBottom = evilBallPosY + 20, evilLeft = evilBallPosX, evilRight = evilBallPosX + 20;
+                let heroLeft = parseInt(ball1.el.style.left), heroBottom = parseInt(ball1.el.style.top) + 20, heroTop = parseInt(ball1.el.style.top), heroRight = parseInt(ball1.el.style.left) + 20;
+
+                if (heroBottom >= evilTop && heroTop <= evilBottom && heroRight >= evilLeft && heroLeft <= evilRight) {
                     stopBalls()
                     console.log('collision')
                 }
