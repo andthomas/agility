@@ -48,7 +48,6 @@ window.onload = () => {
 
                 if (heroBottom >= evilTop && heroTop <= evilBottom && heroRight >= evilLeft && heroLeft <= evilRight) {
                     stopBalls()
-                    console.log('collision')
                 }
             }
 
@@ -95,6 +94,7 @@ window.onload = () => {
     let controlsOn = true;
     onkeydown = onkeyup = (e) => {
         if (!controlsOn) return;
+
         map[e.keyCode] = e.type == `keydown`;
         if (e.keyCode !== 37 && e.keyCode !== 38 && e.keyCode !== 39 && e.keyCode !== 40) return;
 
@@ -102,24 +102,32 @@ window.onload = () => {
         const { left: posLeft, top: posTop } = gameBall;
         
         if (map[`37`] && map[`38`]) {
+            if (parseInt(posLeft) <= 0 || parseInt(posTop) <= 0) return;
             gameBall.left = `${parseInt(posLeft) - 10}px`;
             gameBall.top = `${parseInt(posTop) - 10}px`;
         } else if (map[`38`] && map[`39`]) {
+            if (parseInt(posLeft) >= window.innerWidth - 20 || parseInt(posTop) <= 0) return;
             gameBall.top = `${parseInt(posTop) - 10}px`;
             gameBall.left = `${parseInt(posLeft) + 10}px`;
         } else if (map[`39`] && map[`40`]) {
+            if (parseInt(posLeft) >= window.innerWidth - 20 || parseInt(posTop) >= window.innerHeight - 20) return;
             gameBall.left = `${parseInt(posLeft) + 10}px`;
             gameBall.top = `${parseInt(posTop) + 10}px`;
         } else if (map[`40`] && map[`37`]) {
+            if (parseInt(posLeft) <= 0 || parseInt(posTop) >= window.innerHeight - 20) return;
             gameBall.top = `${parseInt(posTop) + 10}px`;
             gameBall.left = `${parseInt(posLeft) - 10}px`;
         } else if (map[`37`]) {
+            if (parseInt(posLeft) <= 0) return;
             gameBall.left = `${parseInt(posLeft) - 10}px`;
         } else if (map[`38`]) {
+            if (parseInt(posTop) <= 0) return;
             gameBall.top = `${parseInt(posTop) - 10}px`;
         } else if (map[`39`]) {
+            if (parseInt(posLeft) >= window.innerWidth - 20) return;
             gameBall.left = `${parseInt(posLeft) + 10}px`;
         } else if (map[`40`]) {
+            if (parseInt(posTop) >= window.innerHeight - 20) return;
             gameBall.top = `${parseInt(posTop) + 10}px`;
         }
     }
