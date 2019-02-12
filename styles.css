@@ -3,6 +3,15 @@ body {
     margin: 0px';
 }
 
+#counter {
+    position: fixed;
+    width: 50px;
+    right: 0%;
+    z-index: 10;
+    font-family: 'Arial';
+    font-size: 20px;
+}
+
 .evilBall, .gameBall {
     width: 20px;
     height: 20px;
