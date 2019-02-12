@@ -4,6 +4,7 @@ window.onload = () => {
 
     class Ball {
         constructor() {
+            // Create circle div
             this.el = document.createElement(`DIV`);
             this.el.style.top = `${Math.random() * winHeight}px`;
             this.el.style.left = `${Math.random() * winWidth}px`;
@@ -57,10 +58,12 @@ window.onload = () => {
         }
     }
 
+    // Create the players ball
     let ball1 = new Ball;
     ball1.el.className = `gameBall`;
     document.body.append(ball1.el);
 
+    // Create the evil balls, one each second
     let ballsList = [];
     let newBalls;
     let ballCounter = 0;
@@ -79,6 +82,7 @@ window.onload = () => {
 
     createBalls();
 
+    // Stop producing balls, turn off controls
     function stopBalls() {
         ballsList.forEach( (ball) => {
             ball.stop();
@@ -119,5 +123,4 @@ window.onload = () => {
             gameBall.top = `${parseInt(posTop) + 10}px`;
         }
     }
-    
 }
