@@ -8,14 +8,14 @@ window.onload = () => {
             this.el = document.createElement(`DIV`);
             this.el.style.top = `${Math.random() * winHeight}px`;
             this.el.style.left = `${Math.random() * winWidth}px`;
-            this.el.style.transition = `left 0.05s, top 0.05s`;
+            // this.el.style.transition = `left 0.05s, top 0.05s`;
             this.dirY = Math.random() < 0.5 ? `down` : `up`;
             this.dirX = Math.random() < 0.5 ? `right` : `left`;
 
             const self = this;
             this.ballsMove = undefined;
             this.startInterval = () => {
-                self.ballsMove = setInterval(self.start, 50);
+                self.ballsMove = setInterval(self.start, 25);
             }
 
             this.start = () => {
@@ -23,7 +23,7 @@ window.onload = () => {
                 const evilBallPosX = parseInt(this.el.style.left);
 
                 // Move the evil ball up or down 
-                this.el.style.top = this.dirY === `down` ? `${evilBallPosY + 10}px` : `${evilBallPosY - 10}px`;
+                this.el.style.top = this.dirY === `down` ? `${evilBallPosY + 5}px` : `${evilBallPosY - 5}px`;
 
                 // Change direction of evil ball if it hits the wall
                 if (evilBallPosY > winHeight) {
@@ -33,7 +33,7 @@ window.onload = () => {
                 }
 
                 // Move the ball left or right
-                this.el.style.left = this.dirX === `right` ? `${evilBallPosX + 10}px` : `${evilBallPosX - 10}px`;
+                this.el.style.left = this.dirX === `right` ? `${evilBallPosX + 5}px` : `${evilBallPosX - 5}px`;
 
                 // Change direction of evil ball if it hits the wall
                 if (evilBallPosX > winWidth) {
