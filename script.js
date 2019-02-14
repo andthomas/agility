@@ -8,7 +8,6 @@ window.onload = () => {
             this.el = document.createElement(`DIV`);
             this.el.style.top = `${Math.random() * winHeight}px`;
             this.el.style.left = `${Math.random() * winWidth}px`;
-            // this.el.style.transition = `left 0.05s, top 0.05s`;
             this.dirY = Math.random() < 0.5 ? `down` : `up`;
             this.dirX = Math.random() < 0.5 ? `right` : `left`;
 
@@ -88,6 +87,10 @@ window.onload = () => {
             clearInterval(newBalls);
             controlsOn = false;
         })
+    }
+
+    keepGoing = () => {
+        $(".ball").css(animation)
     }
     
     let map = {};
