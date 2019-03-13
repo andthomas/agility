@@ -78,7 +78,7 @@ window.onload = () => {
         }, 1000)
     }
 
-    // createBalls();
+    createBalls();
 
     // Stop producing balls, turn off controls
     function stopBalls() {
@@ -168,7 +168,6 @@ window.onload = () => {
             if (parseInt(posLeft) <= 0) return;
             animation = change['left'];
             going = setInterval(keepGoing, 1);
-            console.log('hi')
         } else if (map[`38`]) {
             if (parseInt(posTop) <= 0) return;
             animation = change['up'];
