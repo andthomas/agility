@@ -85,6 +85,7 @@ window.onload = () => {
         ballsList.forEach( (ball) => {
             ball.stop();
             clearInterval(newBalls);
+            clearInterval(going)
             controlsOn = false;
         })
     }
