@@ -78,7 +78,7 @@ window.onload = () => {
         }, 1000)
     }
 
-    createBalls();
+    // createBalls();
 
     // Stop producing balls, turn off controls
     function stopBalls() {
@@ -89,49 +89,98 @@ window.onload = () => {
         })
     }
 
-    keepGoing = () => {
-        $(".ball").css(animation)
+    var change = {
+        'right': {
+            left: "+=1"
+        },
+
+        'down': {
+            top: "+=1"
+        },
+
+        'left': {
+            left: "-=1"
+        },
+
+        'up': {
+            top: "-=1"
+        },
+        
+        'leftUp': {
+            top: "-=1",
+            left: "-=1"
+        },
+
+        'upRight': {
+            top: "-=1",
+            left: "+=1"
+        },
+
+        'rightDown': {
+            top: "+=1",
+            left: "+=1"
+        },
+
+        'downRight': {
+            top: "+=1",
+            left: "-=1"
+        },
     }
     
     let map = {};
     let controlsOn = true;
+    let going;
     onkeydown = onkeyup = (e) => {
+
         if (!controlsOn) return;
 
         map[e.keyCode] = e.type == `keydown`;
         if (e.keyCode !== 37 && e.keyCode !== 38 && e.keyCode !== 39 && e.keyCode !== 40) return;
+
+        clearInterval(going)
+
+        let animation;
+
+        function keepGoing() {
+            $(".gameBall").css(animation)
+        }
 
         const gameBall = document.querySelector(`.gameBall`).style;
         const { left: posLeft, top: posTop } = gameBall;
         
         if (map[`37`] && map[`38`]) {
             if (parseInt(posLeft) <= 0 || parseInt(posTop) <= 0) return;
-            gameBall.left = `${parseInt(posLeft) - 10}px`;
-            gameBall.top = `${parseInt(posTop) - 10}px`;
+            animation = change['leftUp'];
+            going = setInterval(keepGoing, 1);
         } else if (map[`38`] && map[`39`]) {
             if (parseInt(posLeft) >= window.innerWidth - 20 || parseInt(posTop) <= 0) return;
-            gameBall.top = `${parseInt(posTop) - 10}px`;
-            gameBall.left = `${parseInt(posLeft) + 10}px`;
+            animation = change['upRight'];
+            going = setInterval(keepGoing, 1);
         } else if (map[`39`] && map[`40`]) {
             if (parseInt(posLeft) >= window.innerWidth - 20 || parseInt(posTop) >= window.innerHeight - 20) return;
-            gameBall.left = `${parseInt(posLeft) + 10}px`;
-            gameBall.top = `${parseInt(posTop) + 10}px`;
+            animation = change['rightDown'];
+            going = setInterval(keepGoing, 1);
         } else if (map[`40`] && map[`37`]) {
             if (parseInt(posLeft) <= 0 || parseInt(posTop) >= window.innerHeight - 20) return;
-            gameBall.top = `${parseInt(posTop) + 10}px`;
-            gameBall.left = `${parseInt(posLeft) - 10}px`;
+            animation = change['downRight'];
+            going = setInterval(keepGoing, 1);
         } else if (map[`37`]) {
             if (parseInt(posLeft) <= 0) return;
-            gameBall.left = `${parseInt(posLeft) - 10}px`;
+            animation = change['left'];
+            going = setInterval(keepGoing, 1);
+            console.log('hi')
         } else if (map[`38`]) {
             if (parseInt(posTop) <= 0) return;
-            gameBall.top = `${parseInt(posTop) - 10}px`;
+            animation = change['up'];
+            going = setInterval(keepGoing, 1);
         } else if (map[`39`]) {
             if (parseInt(posLeft) >= window.innerWidth - 20) return;
-            gameBall.left = `${parseInt(posLeft) + 10}px`;
+            animation = change['right'];
+            going = setInterval(keepGoing, 1);
         } else if (map[`40`]) {
             if (parseInt(posTop) >= window.innerHeight - 20) return;
-            gameBall.top = `${parseInt(posTop) + 10}px`;
+            animation = change['down'];
+            going = setInterval(keepGoing, 1);
         }
     }
 }
