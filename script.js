@@ -14,7 +14,7 @@ window.onload = () => {
             const self = this;
             this.ballsMove = undefined;
             this.startInterval = () => {
-                self.ballsMove = setInterval(self.start, 25);
+                self.ballsMove = setInterval(self.start, 10);
             }
 
             this.start = () => {
@@ -22,22 +22,22 @@ window.onload = () => {
                 const evilBallPosX = parseInt(this.el.style.left);
 
                 // Move the evil ball up or down 
-                this.el.style.top = this.dirY === `down` ? `${evilBallPosY + 5}px` : `${evilBallPosY - 5}px`;
+                this.el.style.top = this.dirY === `down` ? `${evilBallPosY + 2}px` : `${evilBallPosY - 2}px`;
 
-                // Change direction of evil ball if it hits the wall
-                if (evilBallPosY > winHeight) {
+                // Move the ball left or right
+                this.el.style.left = this.dirX === `right` ? `${evilBallPosX + 2}px` : `${evilBallPosX - 2}px`;
+
+                // Change Y direction of evil ball if it hits the wall
+                if (evilBallPosY > winHeight - 20) {
                     this.dirY = `up`;
-                } else if (evilBallPosY < 10) {
+                } else if (evilBallPosY < 0) {
                     this.dirY = `down`;
                 }
 
-                // Move the ball left or right
-                this.el.style.left = this.dirX === `right` ? `${evilBallPosX + 5}px` : `${evilBallPosX - 5}px`;
-
-                // Change direction of evil ball if it hits the wall
-                if (evilBallPosX > winWidth) {
+                // Change X direction of evil ball if it hits the wall
+                if (evilBallPosX > winWidth - 20) {
                     this.dirX = `left`;
-                } else if (evilBallPosX < 10) {
+                } else if (evilBallPosX < 0) {
                     this.dirX = `right`;
                 }
 
@@ -90,96 +90,101 @@ window.onload = () => {
         })
     }
 
-    var change = {
+    // Store css properties for keyboard arrow directions
+    var direction = {
         'right': {
             left: "+=1"
         },
-
         'down': {
             top: "+=1"
         },
-
         'left': {
             left: "-=1"
         },
-
         'up': {
             top: "-=1"
         },
-        
         'leftUp': {
             top: "-=1",
             left: "-=1"
         },
-
         'upRight': {
             top: "-=1",
             left: "+=1"
         },
-
         'rightDown': {
             top: "+=1",
             left: "+=1"
         },
-
         'downRight': {
             top: "+=1",
             left: "-=1"
         },
     }
     
-    let map = {};
+    // Store the keys pressed in an empty object (allows for multiple keypresses to be detected)
+    let keyMap = {};
     let controlsOn = true;
+    // Store the animated interval in a variable that can be accessed by stopBalls() 
     let going;
+
     onkeydown = onkeyup = (e) => {
 
-        if (!controlsOn) return;
+        // Don't do anything if the controls are off or non-arrow keys have been pressed
+        if ((!controlsOn) || (e.keyCode !== 37 && e.keyCode !== 38 && e.keyCode !== 39 && e.keyCode !== 40)) return;
 
-        map[e.keyCode] = e.type == `keydown`;
-        if (e.keyCode !== 37 && e.keyCode !== 38 && e.keyCode !== 39 && e.keyCode !== 40) return;
+        // Store the pressed key(s) in the keyMap
+        keyMap[e.keyCode] = e.type == `keydown`;
 
+        // Clear the existing animation (on keyup)
         clearInterval(going)
 
         let animation;
-
+        const gameBall = document.querySelector(`.gameBall`).style;
+        // Access postition of ball and parse into integers stored in variables
+        const { left: posLeft, top: posTop } = gameBall;
+        const intTop = parseInt(posTop);
+        const intLeft = parseInt(posLeft);
+        
+        // Append CSS for movement of players ball
         function keepGoing() {
             $(".gameBall").css(animation)
         }
 
-        const gameBall = document.querySelector(`.gameBall`).style;
-        const { left: posLeft, top: posTop } = gameBall;
-        
-        if (map[`37`] && map[`38`]) {
-            if (parseInt(posLeft) <= 0 || parseInt(posTop) <= 0) return;
-            animation = change['leftUp'];
+        if (keyMap[`37`] && keyMap[`38`]) {
+            // If against a wall don't go any futher
+            if (intLeft <= 0 || intTop <= 0) return;
+            // Obtain the relevent CSS properties for a movement up and to the left
+            animation = direction['leftUp'];
+            // Define the animation using setInterval
             going = setInterval(keepGoing, 1);
-        } else if (map[`38`] && map[`39`]) {
-            if (parseInt(posLeft) >= window.innerWidth - 20 || parseInt(posTop) <= 0) return;
-            animation = change['upRight'];
+        } else if (keyMap[`38`] && keyMap[`39`]) {
+            if (intLeft >= window.innerWidth - 20 || intTop <= 0) return;
+            animation = direction['upRight'];
             going = setInterval(keepGoing, 1);
-        } else if (map[`39`] && map[`40`]) {
-            if (parseInt(posLeft) >= window.innerWidth - 20 || parseInt(posTop) >= window.innerHeight - 20) return;
-            animation = change['rightDown'];
+        } else if (keyMap[`39`] && keyMap[`40`]) {
+            if (intLeft >= window.innerWidth - 20 || intTop >= window.innerHeight - 20) return;
+            animation = direction['rightDown'];
             going = setInterval(keepGoing, 1);
-        } else if (map[`40`] && map[`37`]) {
-            if (parseInt(posLeft) <= 0 || parseInt(posTop) >= window.innerHeight - 20) return;
-            animation = change['downRight'];
+        } else if (keyMap[`40`] && keyMap[`37`]) {
+            if (intLeft <= 0 || intTop >= window.innerHeight - 20) return;
+            animation = direction['downRight'];
             going = setInterval(keepGoing, 1);
-        } else if (map[`37`]) {
-            if (parseInt(posLeft) <= 0) return;
-            animation = change['left'];
+        } else if (keyMap[`37`]) {
+            if (intLeft <= 0) return;
+            animation = direction['left'];
             going = setInterval(keepGoing, 1);
-        } else if (map[`38`]) {
-            if (parseInt(posTop) <= 0) return;
-            animation = change['up'];
+        } else if (keyMap[`38`]) {
+            if (intTop <= 0) return;
+            animation = direction['up'];
             going = setInterval(keepGoing, 1);
-        } else if (map[`39`]) {
-            if (parseInt(posLeft) >= window.innerWidth - 20) return;
-            animation = change['right'];
+        } else if (keyMap[`39`]) {
+            if (intLeft >= window.innerWidth - 20) return;
+            animation = direction['right'];
             going = setInterval(keepGoing, 1);
-        } else if (map[`40`]) {
-            if (parseInt(posTop) >= window.innerHeight - 20) return;
-            animation = change['down'];
+        } else if (keyMap[`40`]) {
+            if (intTop >= window.innerHeight - 20) return;
+            animation = direction['down'];
             going = setInterval(keepGoing, 1);
         }
     }
