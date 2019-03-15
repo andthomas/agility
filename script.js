@@ -65,7 +65,7 @@ window.onload = () => {
             }
 
             this.checkPlayerBoundary = () => {
-                // Access postition of ball and parse into integers stored in variables
+                // Access postition of ball and parse as integers
                 const gameBall = document.querySelector(`.gameBall`).style;
                 const { left: posLeft, top: posTop } = gameBall;
                 const intTop = parseInt(posTop);
