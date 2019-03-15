@@ -11,6 +11,8 @@ window.onload = () => {
             this.dirY = Math.random() < 0.5 ? `down` : `up`;
             this.dirX = Math.random() < 0.5 ? `right` : `left`;
 
+            // Evil ball methods
+            // Create interval for moving evil balls
             const self = this;
             this.ballsMove = undefined;
             this.startInterval = () => {
@@ -43,7 +45,7 @@ window.onload = () => {
 
                 // Check for collision
                 let evilTop = evilBallPosY, evilBottom = evilBallPosY + 20, evilLeft = evilBallPosX, evilRight = evilBallPosX + 20;
-                let heroLeft = parseInt(ball1.el.style.left), heroBottom = parseInt(ball1.el.style.top) + 20, heroTop = parseInt(ball1.el.style.top), heroRight = parseInt(ball1.el.style.left) + 20;
+                let heroLeft = parseInt(playerBall.el.style.left), heroBottom = parseInt(playerBall.el.style.top) + 20, heroTop = parseInt(playerBall.el.style.top), heroRight = parseInt(playerBall.el.style.left) + 20;
 
                 if (heroBottom >= evilTop && heroTop <= evilBottom && heroRight >= evilLeft && heroLeft <= evilRight) {
                     stopBalls()
@@ -53,13 +55,38 @@ window.onload = () => {
             this.stop = () => {
                 clearInterval(self.ballsMove);
             }
+
+            // Player ball methods
+            this.playerBoundary = undefined;
+
+            this.setPlayerBoundary = () => {
+                self.playerBoundary = setInterval(self.checkPlayerBoundary, 1);
+            }
+
+            this.checkPlayerBoundary = () => {
+                // Access postition of ball and parse into integers stored in variables
+                const gameBall = document.querySelector(`.gameBall`).style;
+                const { left: posLeft, top: posTop } = gameBall;
+                const intTop = parseInt(posTop);
+                const intLeft = parseInt(posLeft);
+                if (intLeft < 0 ) {
+                    gameBall.left = 0;
+                } else if (intTop < 0) {
+                    gameBall.top = 0;
+                } else if (intLeft > window.innerWidth - 20) {
+                    gameBall.left = `${window.innerWidth - 20}px`;
+                } else if (intTop > window.innerHeight - 20) {
+                    gameBall.top = `${window.innerHeight - 20}px`;
+                };
+            }  
         }
     }
 
     // Create the players ball
-    let ball1 = new Ball;
-    ball1.el.className = `gameBall`;
-    document.body.append(ball1.el);
+    let playerBall = new Ball;
+    playerBall.el.className = `gameBall`;
+    document.body.append(playerBall.el);
+    playerBall.setPlayerBoundary();
 
     // Create the evil balls, one each second
     let ballsList = [];
@@ -90,6 +117,7 @@ window.onload = () => {
         })
     }
 
+    // Player ball movement
     // Store css properties for keyboard arrow directions
     var direction = {
         'right': {
@@ -140,11 +168,6 @@ window.onload = () => {
         clearInterval(going)
 
         let animation;
-        const gameBall = document.querySelector(`.gameBall`).style;
-        // Access postition of ball and parse into integers stored in variables
-        const { left: posLeft, top: posTop } = gameBall;
-        const intTop = parseInt(posTop);
-        const intLeft = parseInt(posLeft);
         
         // Append CSS for movement of players ball
         function keepGoing() {
@@ -152,38 +175,29 @@ window.onload = () => {
         }
 
         if (keyMap[`37`] && keyMap[`38`]) {
-            // If against a wall don't go any futher
-            if (intLeft <= 0 || intTop <= 0) return;
             // Obtain the relevent CSS properties for a movement up and to the left
             animation = direction['leftUp'];
             // Define the animation using setInterval
             going = setInterval(keepGoing, 1);
         } else if (keyMap[`38`] && keyMap[`39`]) {
-            if (intLeft >= window.innerWidth - 20 || intTop <= 0) return;
             animation = direction['upRight'];
             going = setInterval(keepGoing, 1);
         } else if (keyMap[`39`] && keyMap[`40`]) {
-            if (intLeft >= window.innerWidth - 20 || intTop >= window.innerHeight - 20) return;
             animation = direction['rightDown'];
             going = setInterval(keepGoing, 1);
         } else if (keyMap[`40`] && keyMap[`37`]) {
-            if (intLeft <= 0 || intTop >= window.innerHeight - 20) return;
             animation = direction['downRight'];
             going = setInterval(keepGoing, 1);
         } else if (keyMap[`37`]) {
-            if (intLeft <= 0) return;
             animation = direction['left'];
             going = setInterval(keepGoing, 1);
         } else if (keyMap[`38`]) {
-            if (intTop <= 0) return;
             animation = direction['up'];
             going = setInterval(keepGoing, 1);
         } else if (keyMap[`39`]) {
-            if (intLeft >= window.innerWidth - 20) return;
             animation = direction['right'];
             going = setInterval(keepGoing, 1);
         } else if (keyMap[`40`]) {
-            if (intTop >= window.innerHeight - 20) return;
             animation = direction['down'];
             going = setInterval(keepGoing, 1);
         }
