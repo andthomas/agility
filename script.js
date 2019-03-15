@@ -61,7 +61,7 @@ window.onload = () => {
             this.playerBoundary = undefined;
 
             this.setPlayerBoundary = () => {
-                self.playerBoundary = setInterval(self.checkPlayerBoundary, 10);
+                self.playerBoundary = setInterval(self.checkPlayerBoundary, 2);
             }
 
             this.checkPlayerBoundary = () => {
@@ -71,13 +71,14 @@ window.onload = () => {
                 const intTop = parseInt(posTop);
                 const intLeft = parseInt(posLeft);
 
+                // Keep player ball within the boundaries of the screen
                 if (intLeft < 0 ) gameBall.left = 0;
                 if (intTop < 0) gameBall.top = 0;
                 if (intLeft > window.innerWidth - 20) gameBall.left = `${window.innerWidth - 20}px`;
                 if (intTop > window.innerHeight - 20) gameBall.top = `${window.innerHeight - 20}px`;
-            }  
+            }
         }
-    }
+    };
 
     // Create the players ball
     let playerBall = new Ball;
@@ -95,12 +96,12 @@ window.onload = () => {
             let b = new Ball;
             b.el.className = `evilBall`;
             document.body.append(b.el);
-            ballsList.push(b)
+            ballsList.push(b);
             b.startInterval();
             ballCounter++;
             document.querySelector('#counter').innerHTML = ballCounter;
         }, 1000)
-    }
+    };
 
     createBalls();
 
@@ -111,41 +112,25 @@ window.onload = () => {
             clearInterval(newBalls);
             clearInterval(going)
             controlsOn = false;
-        })
-        playerBall.stop()
-    }
+        });
+        playerBall.stop();
+    };
 
     // Player ball movement
     // Store css properties for keyboard arrow directions
     var direction = {
-        'right': {
+        '39': {
             left: "+=1"
         },
-        'down': {
+        '40': {
             top: "+=1"
         },
-        'left': {
+        '37': {
             left: "-=1"
         },
-        'up': {
+        '38': {
             top: "-=1"
-        },
-        'leftUp': {
-            top: "-=1",
-            left: "-=1"
-        },
-        'upRight': {
-            top: "-=1",
-            left: "+=1"
-        },
-        'rightDown': {
-            top: "+=1",
-            left: "+=1"
-        },
-        'downRight': {
-            top: "+=1",
-            left: "-=1"
-        },
+        }
     }
     
     // Store the keys pressed in an empty object (allows for multiple keypresses to be detected)
@@ -155,49 +140,31 @@ window.onload = () => {
     let going;
 
     onkeydown = onkeyup = (e) => {
-
         // Don't do anything if the controls are off or non-arrow keys have been pressed
         if ((!controlsOn) || (e.keyCode !== 37 && e.keyCode !== 38 && e.keyCode !== 39 && e.keyCode !== 40)) return;
 
-        // Store the pressed key(s) in the keyMap
+        // Clear the existing animation
+        clearInterval(going);
+
+        // Store the pressed key(s) in the keyMap and convert into an array
         keyMap[e.keyCode] = e.type == `keydown`;
+        const keyArray = Object.entries(keyMap);
 
-        // Clear the existing animation (on keyup)
-        clearInterval(going)
+        // Get all keys that have been pressed and convert them to their direction counterparts, filtering out non-pressed keys (undefined values)
+        const activeKeys = keyArray.map((k) => {
+            if (!k[1]) return;
+            return direction[k[0]];
+        }).filter( (a) => a != null);
 
-        let animation;
+        // If two keys have been pressed they need to be merged into one object to be passed to the .css() method
+        const animation = (activeKeys.length > 1) ? { ...activeKeys[0], ...activeKeys[1] } : activeKeys[0];
         
         // Append CSS for movement of players ball
         function keepGoing() {
-            $(".gameBall").css(animation)
+            $(".gameBall").css(animation);
         }
 
-        if (keyMap[`37`] && keyMap[`38`]) {
-            // Obtain the relevent CSS properties for a movement up and to the left
-            animation = direction['leftUp'];
-            // Define the animation using setInterval
-            going = setInterval(keepGoing, 1);
-        } else if (keyMap[`38`] && keyMap[`39`]) {
-            animation = direction['upRight'];
-            going = setInterval(keepGoing, 1);
-        } else if (keyMap[`39`] && keyMap[`40`]) {
-            animation = direction['rightDown'];
-            going = setInterval(keepGoing, 1);
-        } else if (keyMap[`40`] && keyMap[`37`]) {
-            animation = direction['downRight'];
-            going = setInterval(keepGoing, 1);
-        } else if (keyMap[`37`]) {
-            animation = direction['left'];
-            going = setInterval(keepGoing, 1);
-        } else if (keyMap[`38`]) {
-            animation = direction['up'];
-            going = setInterval(keepGoing, 1);
-        } else if (keyMap[`39`]) {
-            animation = direction['right'];
-            going = setInterval(keepGoing, 1);
-        } else if (keyMap[`40`]) {
-            animation = direction['down'];
-            going = setInterval(keepGoing, 1);
-        }
+        // Set the interval for the animation if key has been pressed
+        if (animation) going = setInterval(keepGoing, 1);
     }
 }
