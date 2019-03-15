@@ -54,13 +54,14 @@ window.onload = () => {
 
             this.stop = () => {
                 clearInterval(self.ballsMove);
+                clearInterval(self.playerBoundary);
             }
 
             // Player ball methods
             this.playerBoundary = undefined;
 
             this.setPlayerBoundary = () => {
-                self.playerBoundary = setInterval(self.checkPlayerBoundary, 1);
+                self.playerBoundary = setInterval(self.checkPlayerBoundary, 10);
             }
 
             this.checkPlayerBoundary = () => {
@@ -69,15 +70,11 @@ window.onload = () => {
                 const { left: posLeft, top: posTop } = gameBall;
                 const intTop = parseInt(posTop);
                 const intLeft = parseInt(posLeft);
-                if (intLeft < 0 ) {
-                    gameBall.left = 0;
-                } else if (intTop < 0) {
-                    gameBall.top = 0;
-                } else if (intLeft > window.innerWidth - 20) {
-                    gameBall.left = `${window.innerWidth - 20}px`;
-                } else if (intTop > window.innerHeight - 20) {
-                    gameBall.top = `${window.innerHeight - 20}px`;
-                };
+
+                if (intLeft < 0 ) gameBall.left = 0;
+                if (intTop < 0) gameBall.top = 0;
+                if (intLeft > window.innerWidth - 20) gameBall.left = `${window.innerWidth - 20}px`;
+                if (intTop > window.innerHeight - 20) gameBall.top = `${window.innerHeight - 20}px`;
             }  
         }
     }
@@ -115,6 +112,7 @@ window.onload = () => {
             clearInterval(going)
             controlsOn = false;
         })
+        playerBall.stop()
     }
 
     // Player ball movement
