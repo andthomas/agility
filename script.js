@@ -2,16 +2,20 @@ window.onload = () => {
     const winHeight = window.innerHeight;
     const winWidth = window.innerWidth;
 
-    class Ball {
+    class EvilBall {
         constructor() {
             // Create circle div
             this.el = document.createElement(`DIV`);
+            const playerBall = document.querySelector(`.gameBall`).style;
+            const { left: playerLeft } = playerBall;
+
+            // Place ball on opposite side of the screen to the players ball so they don't instantly collide
+            this.el.style.left = (parseInt(playerLeft) < window.innerWidth / 2) ? `${(0.5 + Math.random() * 0.5) * winWidth}px` : `${(Math.random() * 0.5) * winWidth}px`;
+
             this.el.style.top = `${Math.random() * winHeight}px`;
-            this.el.style.left = `${Math.random() * winWidth}px`;
             this.dirY = Math.random() < 0.5 ? `down` : `up`;
             this.dirX = Math.random() < 0.5 ? `right` : `left`;
 
-            // Evil ball methods
             // Create interval for moving evil balls
             const self = this;
             this.ballsMove = undefined;
@@ -45,7 +49,7 @@ window.onload = () => {
 
                 // Check for collision
                 let evilTop = evilBallPosY, evilBottom = evilBallPosY + 20, evilLeft = evilBallPosX, evilRight = evilBallPosX + 20;
-                let heroLeft = parseInt(playerBall.el.style.left), heroBottom = parseInt(playerBall.el.style.top) + 20, heroTop = parseInt(playerBall.el.style.top), heroRight = parseInt(playerBall.el.style.left) + 20;
+                let heroLeft = parseInt(playerBall.left), heroBottom = parseInt(playerBall.top) + 20, heroTop = parseInt(playerBall.top), heroRight = parseInt(playerBall.left) + 20;
 
                 if (heroBottom >= evilTop && heroTop <= evilBottom && heroRight >= evilLeft && heroLeft <= evilRight) {
                     stopBalls()
@@ -54,12 +58,21 @@ window.onload = () => {
 
             this.stop = () => {
                 clearInterval(self.ballsMove);
-                clearInterval(self.playerBoundary);
             }
+        }
+    };
 
-            // Player ball methods
+    class PlayerBall {
+        constructor() {
+            this.el = document.createElement(`DIV`);
+            this.el.style.top = `${Math.random() * winHeight}px`;
+            this.el.style.left = `${Math.random() * winWidth}px`;
+            this.dirY = Math.random() < 0.5 ? `down` : `up`;
+            this.dirX = Math.random() < 0.5 ? `right` : `left`;
+            
+            const self = this;
+            
             this.playerBoundary = undefined;
-
             this.setPlayerBoundary = () => {
                 self.playerBoundary = setInterval(self.checkPlayerBoundary, 2);
             }
@@ -72,7 +85,7 @@ window.onload = () => {
                 const intLeft = parseInt(posLeft);
 
                 // Keep player ball within the boundaries of the screen
-                if (intLeft < 0 ) gameBall.left = 0;
+                if (intLeft < 0) gameBall.left = 0;
                 if (intTop < 0) gameBall.top = 0;
                 if (intLeft > window.innerWidth - 20) gameBall.left = `${window.innerWidth - 20}px`;
                 if (intTop > window.innerHeight - 20) gameBall.top = `${window.innerHeight - 20}px`;
@@ -81,7 +94,7 @@ window.onload = () => {
     };
 
     // Create the players ball
-    let playerBall = new Ball;
+    let playerBall = new PlayerBall;
     playerBall.el.className = `gameBall`;
     document.body.append(playerBall.el);
     playerBall.setPlayerBoundary();
@@ -93,7 +106,7 @@ window.onload = () => {
     
     const createBalls = () => {
         newBalls = setInterval( function() {
-            let b = new Ball;
+            let b = new EvilBall;
             b.el.className = `evilBall`;
             document.body.append(b.el);
             ballsList.push(b);
@@ -113,7 +126,6 @@ window.onload = () => {
             clearInterval(going)
             controlsOn = false;
         });
-        playerBall.stop();
     };
 
     // Player ball movement
@@ -141,13 +153,13 @@ window.onload = () => {
 
     onkeydown = onkeyup = (e) => {
         // Don't do anything if the controls are off or non-arrow keys have been pressed
-        if ((!controlsOn) || (e.keyCode !== 37 && e.keyCode !== 38 && e.keyCode !== 39 && e.keyCode !== 40)) return;
+        if ((!controlsOn) || (e.keyCode < 37 || e.keyCode > 40)) return;
 
         // Clear the existing animation
         clearInterval(going);
 
         // Store the pressed key(s) in the keyMap and convert into an array
-        keyMap[e.keyCode] = e.type == `keydown`;
+        keyMap[e.keyCode] = e.type === `keydown`;
         const keyArray = Object.entries(keyMap);
 
         // Get all keys that have been pressed and convert them to their direction counterparts, filtering out non-pressed keys (undefined values)

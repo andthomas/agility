@@ -34,3 +34,7 @@ body {
 .gameBall {
     background-color: blue;
 }
+
+.menu {
+    display: none;
+}
