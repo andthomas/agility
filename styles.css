@@ -8,6 +8,7 @@ body {
     background-color: #272727;
     height: 100vh;
     width: 100vw;
+    overflow:hidden;
 }
 
 .crt::before {
@@ -31,7 +32,7 @@ body {
     z-index: 10;
     font-size: 20px;
     color: #fff;
-    z-index: 0;
+    z-index: 1;
 }
 
 .evilBall, .gameBall {
@@ -44,26 +45,36 @@ body {
 .evilBall {
     /* background-image: url("data:image/svg+xml;utf8,<svg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='114.562px' height='114.56px' viewBox='0 0 114.562 114.56' enable-background='new 0 0 114.562 114.56' xml:space='preserve'><rect x='28.945' y='0.5' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.387' /><rect x='57.333' y='0.5' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='0.558' y='28.887' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='28.945' y='28.887' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='57.333' y='28.887' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='85.721' y='28.887' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='85.721' y='57.274' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='57.333' y='57.274' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='28.945' y='57.274' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='0.558' y='57.274' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='28.945' y='85.66' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.387' /><rect x='57.333' y='85.662' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /></svg>"); */
     /* background-size: contain; */
-    background-color: red;
+    background-color: #d70b0b;
+    z-index: 0;
 }
 
 .gameBall {
     background-color: blue;
+    z-index: 0;
 }
 
 
 .menu {
-    display: none;
-    border: 4px solid #5EB1BF;
-    border-radius: 4px;
-    color: #5EB1BF;
+    position: fixed;
+    border: 4px solid #c0c0c0;
+    color: #c0c0c0;
     padding: 20px;
-    border-radius: 4px;
     width: 400px;
-    margin: 0 auto;
-    margin-top: 15%;
+    top: 20%;
+    left: calc(50% - 220px);
     text-align: center;
-    /* background-color: #5EB1BF; */
-    box-shadow: 3px 3px 5px #cfcfcf;
+    z-index: 1;
+}
 
+.ded {
+    display: none;
+}
+
+.start-game-text {
+    animation: blinker 1s cubic-bezier(0.1, 0.06, 0.04, 2.35) infinite;
+}
+
+@keyframes blinker {  
+    50% { opacity: 0; }
 }
