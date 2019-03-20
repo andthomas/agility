@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="script.js"></script>
-    <link rel="stylesheet" href="styles.css">
-    <title>Agility</title>
-</head>
-<body>
-    <div id="counter">0</div>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="script.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+        <link rel="stylesheet" href="styles.css">
+        <title>Agility</title>
+    </head>
+    <body>
+        <div id="counter">0</div>
+        <div class="game-container crt"></div>
 
-    <div class="menu">
-        <h1>AGIILITY</h1>
-        <h3>Highscore</h3>
-        <span>Andy</span>
-        <span>60</span>
-    </div>
-</body>
+        <div class="menu">
+            <h1>AGIILITY</h1>
+            <span>andy </span><span>60</span>
+            <br>
+            <button onclick="startGame();">NEW GAME</button>
+        </div>
+    </body>
 </html>

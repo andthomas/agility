@@ -103,7 +103,7 @@ window.onload = () => {
     let ballsList = [];
     let newBalls;
     let ballCounter = 0;
-    
+
     const createBalls = () => {
         newBalls = setInterval( function() {
             let b = new EvilBall;
@@ -144,7 +144,7 @@ window.onload = () => {
             top: "-=1"
         }
     }
-    
+
     // Store the keys pressed in an empty object (allows for multiple keypresses to be detected)
     let keyMap = {};
     let controlsOn = true;
