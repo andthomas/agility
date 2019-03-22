@@ -11,6 +11,39 @@ body {
     overflow:hidden;
 }
 
+.border {
+    background-color: white;
+    position: fixed;
+}
+
+.top {
+    height: 5px;
+    width: 100vw;
+    top: 0;
+    left: 0;
+}
+
+.right {
+    width: 5px;
+    height: 100vh;
+    right: 0;
+    top: 0;
+}
+
+.bottom {
+    height: 5px;
+    width: 100vw;
+    bottom: 0;
+    left: 0;
+}
+
+.left {
+    width: 5px;
+    height: 100vh;
+    left: 0;
+    top: 0;
+}
+
 .crt::before {
   content: " ";
   display: block;
@@ -43,8 +76,6 @@ body {
 }
 
 .evilBall {
-    /* background-image: url("data:image/svg+xml;utf8,<svg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='114.562px' height='114.56px' viewBox='0 0 114.562 114.56' enable-background='new 0 0 114.562 114.56' xml:space='preserve'><rect x='28.945' y='0.5' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.387' /><rect x='57.333' y='0.5' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='0.558' y='28.887' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='28.945' y='28.887' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='57.333' y='28.887' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='85.721' y='28.887' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='85.721' y='57.274' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='57.333' y='57.274' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='28.945' y='57.274' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='0.558' y='57.274' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /><rect x='28.945' y='85.66' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.387' /><rect x='57.333' y='85.662' fill='%23ED1F24' stroke='%23000000' stroke-miterlimit='10' width='28.388' height='28.386' /></svg>"); */
-    /* background-size: contain; */
     background-color: #d70b0b;
     z-index: 0;
 }

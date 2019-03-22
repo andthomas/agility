@@ -145,6 +145,7 @@ window.onload = () => {
             document.querySelector('#score').innerHTML = ballCounter;
             document.querySelector('.menu').style.display = "block";
             document.querySelector('.ded').style.display = "block";
+            document.querySelector('.rules').style.display = "none";
             playing = false;
             onkeydown = (e) => {
                 if (e.keyCode != 13 && !playing) return;
