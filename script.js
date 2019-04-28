@@ -1,6 +1,13 @@
 window.onload = () => {
 
     let playing = false;
+    
+    document.querySelector('#button')
+    button.addEventListener('click', function () {
+        window.controller = new DaydreamController();
+        window.controllerConnected = true;
+        window.controller.connect();
+    });
 
     onkeydown = (e) => {
         if(e.keyCode != 13 && !playing) return;
@@ -161,17 +168,17 @@ window.onload = () => {
         // Player ball movement
         // Store css properties for keyboard arrow directions
         var direction = {
-            '39': {
-                left: "+=1"
-            },
-            '40': {
-                top: "+=1"
-            },
             '37': {
                 left: "-=1"
             },
             '38': {
                 top: "-=1"
+            },
+            '39': {
+                left: "+=1"
+            },
+            '40': {
+                top: "+=1"
             }
         }
 
@@ -181,33 +188,79 @@ window.onload = () => {
         // Store the animated interval in a variable that can be accessed by stopBalls() 
         let going;
 
-        onkeydown = onkeyup = (e) => {
-            // Don't do anything if the controls are off or non-arrow keys have been pressed
-            if ((!controlsOn) || (e.keyCode < 37 || e.keyCode > 40)) return;
+        // If the daydream controller is connected use its controls
+        if (window.controllerConnected) {
 
-            // Clear the existing animation
-            clearInterval(going);
+            window.controller.onStateChange(function (state) {
+                window.gameController = { x: state.yOri, y: state.zAcc }
 
-            // Store the pressed key(s) in the keyMap and convert into an array
-            keyMap[e.keyCode] = e.type === `keydown`;
-            const keyArray = Object.entries(keyMap);
+                console.log('x: ', state.yOri)
+                console.log('y: ', state.zAcc)
+                // Clear the existing animation
+                clearInterval(going);
 
-            // Get all keys that have been pressed and convert them to their direction counterparts, filtering out non-pressed keys (undefined values)
-            const activeKeys = keyArray.map((k) => {
-                if (!k[1]) return;
-                return direction[k[0]];
-            }).filter( (a) => a != null);
+                let animation;
 
-            // If two keys have been pressed they need to be merged into one object to be passed to the .css() method
-            const animation = (activeKeys.length > 1) ? { ...activeKeys[0], ...activeKeys[1] } : activeKeys[0];
-            
-            // Append CSS for movement of players ball
-            function keepGoing() {
-                $(".gameBall").css(animation);
+                if (state.yOri > 0 && state.zAcc > 3) {
+                    animation = { left: "-=1", top: "+=1" }
+                } else if (state.yOri < -1 && state.zAcc < -3) {
+                    animation = { left: "+=1", top: "-=1" }
+                } else if (state.yOri > 0 && state.zAcc < -3) {
+                    animation = { top: "-=1", left: "-=1" }
+                } else if (state.yOri < -1 && state.zAcc > 3 ) {
+                    animation = { top: "+=1", left: "+=1"}
+                } else if (state.yOri > 0) {
+                    animation = { left: "-=1"}
+                } else if (state.yOri < -1) {
+                    animation = { left: "+=1"}
+                } else if (state.zAcc > 3) {
+                    animation = { top: "+=1"}
+                } else if (state.zAcc < -3) {
+                    animation = { top: "-=1"}
+                }
+                
+                // Append CSS for movement of players ball
+                function keepGoing() {
+                    $(".gameBall").css(animation);
+                }
+    
+                // Set the interval for the animation if key has been pressed
+                if (animation) going = setInterval(keepGoing, 1);
+            });
+
+
+
+        // If the daydream controller isn't connected use the keyboard controls
+        } else {
+            onkeydown = onkeyup = (e) => {
+                // Don't do anything if the controls are off or non-arrow keys have been pressed
+                if ((!controlsOn) || (e.keyCode < 37 || e.keyCode > 40)) return;
+    
+                // Clear the existing animation
+                clearInterval(going);
+    
+                // Store the pressed key(s) in the keyMap and convert into an array
+                keyMap[e.keyCode] = e.type === `keydown`;
+                const keyArray = Object.entries(keyMap);
+    
+                // Get all keys that have been pressed and convert them to their direction counterparts, filtering out non-pressed keys (undefined values)
+                const activeKeys = keyArray.map((k) => {
+                    if (!k[1]) return;
+                    return direction[k[0]];
+                }).filter( (a) => a != null);
+    
+                // If two keys have been pressed they need to be merged into one object to be passed to the .css() method
+                const animation = (activeKeys.length > 1) ? { ...activeKeys[0], ...activeKeys[1] } : activeKeys[0];
+                
+                // Append CSS for movement of players ball
+                function keepGoing() {
+                    $(".gameBall").css(animation);
+                }
+    
+                // Set the interval for the animation if key has been pressed
+                if (animation) going = setInterval(keepGoing, 1);
             }
-
-            // Set the interval for the animation if key has been pressed
-            if (animation) going = setInterval(keepGoing, 1);
         }
+
     }
 }
