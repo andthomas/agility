@@ -194,24 +194,24 @@ window.onload = () => {
             window.controller.onStateChange(function (state) {
                 window.gameController = { x: state.yOri, y: state.zAcc }
 
-                console.log('x: ', state.yOri)
-                console.log('y: ', state.zAcc)
+                // console.log('x: ', state.yOri)
+                // console.log('y: ', state.zAcc)
                 // Clear the existing animation
                 clearInterval(going);
 
                 let animation;
 
-                if (state.yOri > 0 && state.zAcc > 3) {
+                if (state.yOri > 2 && state.zAcc > 3) {
                     animation = { left: "-=1", top: "+=1" }
-                } else if (state.yOri < -1 && state.zAcc < -3) {
+                } else if (state.yOri < 1.6 && state.zAcc < -3) {
                     animation = { left: "+=1", top: "-=1" }
-                } else if (state.yOri > 0 && state.zAcc < -3) {
+                } else if (state.yOri > 2 && state.zAcc < -3) {
                     animation = { top: "-=1", left: "-=1" }
-                } else if (state.yOri < -1 && state.zAcc > 3 ) {
+                } else if (state.yOri < 1.6 && state.zAcc > 3 ) {
                     animation = { top: "+=1", left: "+=1"}
-                } else if (state.yOri > 0) {
+                } else if (state.yOri > 2) {
                     animation = { left: "-=1"}
-                } else if (state.yOri < -1) {
+                } else if (state.yOri < 1.6) {
                     animation = { left: "+=1"}
                 } else if (state.zAcc > 3) {
                     animation = { top: "+=1"}
