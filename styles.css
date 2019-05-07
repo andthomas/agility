@@ -103,8 +103,36 @@ body {
 
 .start-game-text {
     animation: blinker 1s cubic-bezier(0.1, 0.06, 0.04, 2.35) infinite;
+    color: #00ff0b;
 }
 
 @keyframes blinker {  
     50% { opacity: 0; }
+}
+
+#dd-info {
+    color: red;
+}
+
+.btn {
+	background: #7C7C7C;
+	border-bottom: 6px inset rgba(0,0,0,.5);
+	border-left: 6px inset rgba(0,0,0,.5);
+	border-right: 6px inset rgba(255,255,255,.5);
+	border-top: 6px inset rgba(255,255,255,.5);
+	box-sizing: border-box;
+	color: white;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 1rem;
+	margin: 1.3rem;
+	min-width: 200px;
+	padding: .5rem;
+	text-transform: uppercase;
+    width: auto;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.btn.primary {
+	background: #881400;
 }

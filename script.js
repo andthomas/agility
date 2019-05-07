@@ -1,12 +1,22 @@
 window.onload = () => {
 
     let playing = false;
+    let daydreamCenterX = 0;
     
     document.querySelector('#button')
     button.addEventListener('click', function () {
         window.controller = new DaydreamController();
         window.controllerConnected = true;
         window.controller.connect();
+        document.getElementById('button').style.display = "none";
+        document.getElementById('dd-info').innerHTML = `CLICK LARGE BUTTON TO CALIBRATE`;
+
+        window.controller.onStateChange(function (state) {
+            if (!playing && state.isClickDown) {
+                daydreamCenterX = state.yOri;
+                document.getElementById('dd-info').innerHTML = `CALIBRATED TO ${daydreamCenterX}`
+            }
+        });
     });
 
     onkeydown = (e) => {
@@ -14,6 +24,7 @@ window.onload = () => {
         startGame();
         playing = true;
     }
+
 
     startGame = () => {
 
@@ -192,26 +203,25 @@ window.onload = () => {
         if (window.controllerConnected) {
 
             window.controller.onStateChange(function (state) {
+                if (!controlsOn) return;
                 window.gameController = { x: state.yOri, y: state.zAcc }
 
-                // console.log('x: ', state.yOri)
-                // console.log('y: ', state.zAcc)
                 // Clear the existing animation
                 clearInterval(going);
 
                 let animation;
 
-                if (state.yOri > 2 && state.zAcc > 3) {
+                if (state.yOri > (daydreamCenterX + 0.2) && state.zAcc > 3) {
                     animation = { left: "-=1", top: "+=1" }
-                } else if (state.yOri < 1.6 && state.zAcc < -3) {
+                } else if (state.yOri < (daydreamCenterX - 0.2) && state.zAcc < -3) {
                     animation = { left: "+=1", top: "-=1" }
-                } else if (state.yOri > 2 && state.zAcc < -3) {
+                } else if (state.yOri > (daydreamCenterX + 0.2) && state.zAcc < -3) {
                     animation = { top: "-=1", left: "-=1" }
-                } else if (state.yOri < 1.6 && state.zAcc > 3 ) {
+                } else if (state.yOri < (daydreamCenterX - 0.2) && state.zAcc > 3 ) {
                     animation = { top: "+=1", left: "+=1"}
-                } else if (state.yOri > 2) {
+                } else if (state.yOri > (daydreamCenterX + 0.2)) {
                     animation = { left: "-=1"}
-                } else if (state.yOri < 1.6) {
+                } else if (state.yOri < (daydreamCenterX - 0.2)) {
                     animation = { left: "+=1"}
                 } else if (state.zAcc > 3) {
                     animation = { top: "+=1"}
