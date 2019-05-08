@@ -9,7 +9,7 @@ window.onload = () => {
         window.controllerConnected = true;
         window.controller.connect();
         document.getElementById('button').style.display = "none";
-        document.getElementById('dd-info').innerHTML = `CLICK LARGE BUTTON TO CALIBRATE`;
+        document.getElementById('dd-info').innerHTML = `POINT CONTROLLER AT SCREEN AND CLICK LARGE BUTTON TO CALIBRATE`;
 
         window.controller.onStateChange(function (state) {
             if (!playing && state.isClickDown) {
