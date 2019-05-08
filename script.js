@@ -159,7 +159,7 @@ window.onload = () => {
             });
 
             // Show menu screen again with score and ability to replay
-            document.querySelector('#menu-heading').innerHTML = `YOU DIED`;
+            document.querySelector('#menu-heading').innerHTML = `GAME OVER`;
             document.querySelector('#score').innerHTML = ballCounter;
             document.querySelector('.menu').style.display = "block";
             document.querySelector('.ded').style.display = "block";
