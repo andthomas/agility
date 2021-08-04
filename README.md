@@ -1,6 +1,6 @@
 # Agility
 
-Agility is a very basic JS game I made in order to try out ES6 class syntax and destructuring in an actual project.
+Agility is a simple JS game I made while learning some ES6 features and goodies.
 
 In the process I developed a really smooth set of controls using the arrow keys. 
 
